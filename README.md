@@ -199,23 +199,7 @@ http://IPAddress:9000/         (9000 --- default port for Sonar)
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -> **Download and install sonar on Ubuntu**
 
-sudo mkdir /downloads/sonarqube -p
-sudo cd /downloads/sonarqube
-sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873-linux.zip
-sudo unzip sonar-scanner-cli-4.2.0.1873-linux.zip
-sudo mv sonar-scanner-4.2.0.1873-linux /opt/sonar-scanner
-sudo vi /opt/sonar-scanner/conf/sonar-scanner.properties
-         sonar.host.url=http://localhost:9000
-         sonar.sourceEncoding=UTF-8
-
-sudo vi /etc/profile.d/sonar-scanner.sh
-        #/bin/bash
-        export PATH="$PATH:/opt/sonar-scanner/bin"
-
-sudo reboot
-sudo source /etc/profile.d/sonar-scanner.sh
-
-sonar-scanner -v
+**https://medium.com/@deshdeepakdhobi/how-to-install-and-configure-sonarqube-on-aws-ec2-ubuntu-22-04-c89a3f1c2447**
 
 ==============================================================================================================================
 **Helm**
