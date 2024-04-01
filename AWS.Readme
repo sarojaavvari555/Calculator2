@@ -1,0 +1,32 @@
+IAM --> Identity Access Management
+
+Four Features:
+1. users    --> create users and assign policies to that particular user.
+2. groups   --> create a group and add policies to that group and assign users to that group.
+3. Roles    --> Create a connectivity betweeen usr to service or Service to service and attach policy to that role.
+4. policies --> Policies are nothing but providing permissions for users, groups and roles.
+
+
+EC2 Instance:
+
+create Instances -> instance name, instance type, AMI(linux, redhat, centos, macos........), Keypair, secutiry group(ssh, http, https), storage config (volumes) --- create instance
+Take the VM public IP and login using putty with help of .PPK key pair file.
+
+EBS Volumes:
+
+-> Elastic block storages to aws instances.
+-> We can create multiple volume while creating VM or create new volume and attach/detach to aws instance (but instance need to be in stop state).
+-> From this volumes we can create snapshots for our instances and from snapshot we can create new storage volume.
+
+Route53:
+
+-> Using route53 we can register our Domains (techskills.com)
+-> Aws will charge yearly based.
+-> Hosted Zones: 
+         -> We can redirect traffic from specific zone to our DNS based on Zone records (techskills.au, techskills.uk, techskills.us.....)
+-> Record sets/Alias names(CNAME)
+         -> Short cut names to access our DNS.
+
+Amazon S3 bucket:
+
+-> Using s3 bucket we can upload file to that bucket to access website from browser. thats means simply we can deploy our website using s3 bucket.
