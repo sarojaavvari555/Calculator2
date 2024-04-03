@@ -30,45 +30,45 @@ pipeline {
                 '''
             }
         }
-        stage ("Push to ECR") {
-            steps {
-               sh "aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin 261393467661.dkr.ecr.ap-south-1.amazonaws.com"
-               sh "docker tag calculator 261393467661.dkr.ecr.ap-south-1.amazonaws.com/calculator"
-               //sh "docker push 261393467661.dkr.ecr.ap-south-1.amazonaws.com/calculator"
-            }
-        }
         stage('Helm Package') {
             steps {
                 sh '''#!/bin/bash
                 helm create calculator
+                helm lint calculator
                 helm package calculator
             '''
             }
         }
-        stage('AWS EKS Authentication') {
+        stage('AWS Authentication') {
             steps {
                 withAWS(region: 'ap-south-1', credentials: 'aws-credentials') {
-                    sh "aws eks --region ap-south-1 update-kubeconfig --name awseks"
+                    sh "aws eks --region us-east-1 update-kubeconfig --name demo-eks"
                 }
             }
         }
         stage('Kubernetes Setup') {
             steps {
                 // Use Kubernetes plugin to set up the connection to EKS
-                withKubeConfig(credentialsId: 'K8S', clusterName: 'awseks', serverUrl: 'https://B8D3E5A4AEA99EA3C2C5693199C1ADF2.gr7.ap-south-1.eks.amazonaws.com') {
+                withKubeConfig(credentialsId: 'K8S', clusterName: 'eks', serverUrl: 'https://B5FE4869B0809F47FCBB3CAE5F9E14D8.gr7.us-east-1.eks.amazonaws.com') {
                 }
             }
         }
-        stage('Install Helm Chart') {
+        stage('Deploy Helm Chart in kubernetes') {
             steps {
-                // Install Helm and initialize Helm
-                sh 'helm lint calculator'
-                
                 // Add Helm repository if necessary
                 sh 'helm repo add stable https://charts.helm.sh/stable'
                 
                 // Install Helm chart
-                //sh 'helm install calculator calculator --namespace=default'
+                sh 'helm upgrade --install calculator calculator --namespace=default'
+            }
+        }
+        stage('verify') {
+            steps {
+                // display the cluster nodes
+                sh 'kubectl get nodes'
+                
+                // disply the deployed pods
+                sh 'kubectl get pods'
             }
         }
     }
