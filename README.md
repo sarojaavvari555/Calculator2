@@ -306,7 +306,7 @@ What is PV and PVC?
 
 
 
-
+NOTE :** https://www.coachdevops.com/2022/05/automate-eks-cluster-using-script-shell.html **
 
 
 
