@@ -46,18 +46,18 @@ pipeline {
         }
         stage('Deploy app in kubernetes') {
             steps {
-                sh 'kubectl delete ns nginx'
+                sh 'kubectl delete ns tomcat'
                 sleep 30
-                sh 'kubectl create namespace nginx'
+                sh 'kubectl create namespace tomcat'
                 sh 'kubectl get ns'
                 
                 // Add Helm repository if necessary
-                sh 'kubectl apply -f deployment.yaml -n nginx'
+                sh 'kubectl apply -f tomcatdeployment.yaml -n tomcat'
                 
                 // Install Helm chart
-                sh 'kubectl apply -f service.yaml -n nginx'
+                sh 'kubectl apply -f tomcatservice.yaml -n tomcat'
                 
-                sh 'kubectl apply -f nginx-loadbalancer.yaml -n nginx'
+                sh 'kubectl apply -f tomcat-loadbalancer.yaml -n tomcat'
                 
             }
         }
@@ -67,9 +67,9 @@ pipeline {
                 sh 'kubectl get nodes'
                 
                 // disply the deployed pods
-                sh 'kubectl get pods -n nginx'
+                sh 'kubectl get pods -n tomcat'
                 
-                sh 'kubectl get svc -n nginx'
+                sh 'kubectl get svc -n tomcat'
             }
         }
     }
