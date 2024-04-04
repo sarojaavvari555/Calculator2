@@ -30,15 +30,6 @@ pipeline {
                 '''
             }
         }
-        stage('Helm Package') {
-            steps {
-                sh '''#!/bin/bash
-                helm create calculator
-                helm lint calculator
-                helm package calculator
-            '''
-            }
-        }
         stage('AWS Authentication') {
             steps {
                 withAWS(region: 'ap-south-1', credentials: 'aws-credentials') {
@@ -53,13 +44,21 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Helm Chart in kubernetes') {
+        stage('Deploy app in kubernetes') {
             steps {
+                sh 'kubectl delete ns nginx'
+                sleep 30
+                sh 'kubectl create namespace nginx'
+                sh 'kubectl get ns'
+                
                 // Add Helm repository if necessary
-                sh 'helm repo add stable https://charts.helm.sh/stable'
+                sh 'kubectl apply -f deployment.yaml -n nginx'
                 
                 // Install Helm chart
-                sh 'helm upgrade --install calculator calculator --namespace=default'
+                sh 'kubectl apply -f service.yaml -n nginx'
+                
+                sh 'kubectl apply -f nginx-loadbalancer.yaml -n nginx'
+                
             }
         }
         stage('verify') {
@@ -68,7 +67,9 @@ pipeline {
                 sh 'kubectl get nodes'
                 
                 // disply the deployed pods
-                sh 'kubectl get pods'
+                sh 'kubectl get pods -n nginx'
+                
+                sh 'kubectl get svc -n nginx'
             }
         }
     }
