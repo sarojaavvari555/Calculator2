@@ -5,7 +5,7 @@ pipeline {
         stage('code checkout') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/Renukadema/Calculator.git'
+                git 'https://github.com/fayazdev/Calculator.git'
             }
         }
         stage('Maven Build') {
