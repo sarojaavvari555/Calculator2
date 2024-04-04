@@ -52,10 +52,10 @@ pipeline {
                 sh 'kubectl get ns'
                 
                 // Add Helm repository if necessary
-                sh 'kubectl apply -f tomcatdeployment.yaml -n tomcat'
+                sh 'kubectl apply -f tomcat-deployment.yaml -n tomcat'
                 
                 // Install Helm chart
-                sh 'kubectl apply -f tomcatservice.yaml -n tomcat'
+                sh 'kubectl apply -f tomcat-service.yaml -n tomcat'
                 
                 sh 'kubectl apply -f tomcat-loadbalancer.yaml -n tomcat'
                 
